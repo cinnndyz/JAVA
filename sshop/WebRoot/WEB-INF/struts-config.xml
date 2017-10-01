@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+<!-- my -->
+<struts-config>
+  <data-sources />
+  <!-- form 需要先配置 form-bean再配置action -->
+  <form-beans>
+  		<form-bean name="productForm" type="form.ProductForm"></form-bean>
+  </form-beans>
+  <global-exceptions />
+  <global-forwards />
+  <action-mappings>
+<!-- 调用List方法 显示数据库内商品信息
+	 并打开jsp 
+-->
+  		<action path="/showIndex" type="action.ProductAction" parameter="list">
+  			<forward name="success" path="/WEB-INF/shop/list.jsp"></forward>
+  		</action>
+  		
+  		
+<!-- 调用login方法 -->
+  		<action path="/showLogin" forward="/WEB-INF/shop/login.jsp"></action>
+  		<action path="/login" type="action.UserAction" parameter="login">
+  			<forward name="success" path="/showIndex.do"></forward>
+  			<forward name="fail" path="/WEB-INF/shop/login.jsp"></forward>
+  		</action>
+  		<action path="/logout" type="action.UserAction" parameter="logout">
+  			<forward name="success" path="/showIndex.do"></forward>
+  		</action>
+  		
+<!-- 注册 -->
+  		<action path="/showRegist" forward="/WEB-INF/shop/regist.jsp"></action>
+  		<action path="/regist" type="action.UserAction" parameter="regist">
+  			<forward name="fail" path="/showRegist.do"></forward>
+  			<forward name="success" path="/showLogin.do"></forward>
+  		</action>
+ <!-- 查看购物车
+ 	  没有登陆 fail 跳转登陆界面
+ 	  登陆 success 跳转购物车界面
+  -->	
+  		<action path="/showCart" type="action.CartAction" parameter="list">
+  			<forward name="fail" path="/showLogin.do"></forward>
+  			<forward name="success" path="/WEB-INF/shop/cart.jsp"></forward>
+  		</action>
+<!-- 
+	继续购物 跳转index
+ -->
+  		<action path="/backlist" forward="/showIndex.do"></action>
+<!-- 
+	加入购物车 调用add方法 成功转index
+ -->
+ 		<action path="/add" type="action.CartAction" parameter="add" >
+ 			<forward name="success" path="/showIndex.do"></forward>
+ 		</action>
+<!-- 
+	清空购物车
+ -->
+ 		<action path="/clear" type="action.CartAction" parameter="clear">
+ 			<forward name="success" path="/showCart.do"></forward>
+ 		</action>
+ <!-- 
+ 	根据ID删除单个商品
+  -->
+  		<action path="/removeId" type="action.CartAction" parameter="removeByProductId">
+  			<forward name="success" path="/showCart.do"></forward>
+  		</action>
+<!-- 
+	修改商品数量
+ -->
+ 		<action path="/cartmodify" type="action.CartAction" parameter="modify">
+ 			<forward name="success" path="/showmodify.do" redirect="true"></forward>
+ 		</action>
+ 		<action path="/showmodify" forward="/WEB-INF/shop/cart.jsp"></action>
+ <!-- 
+ 	删除选中项
+  -->
+  		<action path="/removeIds" type="action.CartAction" parameter="removeByProductIds">
+  			<forward name="success" path="/showremove.do" redirect="true"></forward>
+  		</action>
+  		<action path="/showremove" forward="/showCart.do"></action>
+<!-- 
+	结算
+ -->
+ 		<action path="/showOrder" forward="/WEB-INF/shop/order.jsp"></action>
+<!-- 
+	生成订单
+ -->
+  		<action path="/createOrder" type="action.OrderAction" parameter="create">
+  			<forward name="success" path="/showcreateOrder.do" redirect="true"></forward>
+  		</action>
+  		<action path="/showcreateOrder" forward="/WEB-INF/shop/success.jsp"></action>
+  		<action path="/backcart" forward="/showCart.do"></action>	<!-- 返回 -->
+ <!-- 
+ 	继续购物
+  -->
+  		<action path="/goshopping" forward="/showIndex.do"></action>
+<!-- 
+	历史订单
+ -->	
+  		<action path="/hisback" forward="/showIndex.do"></action>
+		<action path="/showAll" type="action.OrderAction" parameter="list">
+  			<forward name="success" path="/WEB-INF/shop/orderList.jsp"></forward>
+  		</action>
+  		<action path="/detorder" type="action.OrderAction" parameter="detail">		<!-- 订单详情 -->
+  			<forward name="success" path="/WEB-INF/shop/orderDital.jsp"></forward>
+  		</action>
+  		<action path="/removeorder" type="action.OrderAction" parameter="remove">
+  			<forward name="success" path="/showorders.do" redirect="true" ></forward>
+  		</action>
+  		<action path="/showorders" forward="/showAll.do"></action>
+  		
+  </action-mappings>
+  <!--  ApplicationResources.properties文件所在的位置-->
+  <message-resources parameter="com.yourcompany.struts.ApplicationResources" />
+</struts-config>
+

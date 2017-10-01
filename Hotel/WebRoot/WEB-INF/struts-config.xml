@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts-config PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 1.2//EN" "http://struts.apache.org/dtds/struts-config_1_2.dtd">
+
+<struts-config>
+  <data-sources />
+  <form-beans >
+  	<form-bean name="memberForm" type="form.MemberForm"></form-bean>
+  	<form-bean name="subscriptionForm" type="form.SubscriptionForm"></form-bean>
+  	<form-bean name="subscription_dtlForm" type="form.Subscription_dtlForm"></form-bean>
+  </form-beans>
+  <global-exceptions />
+  <global-forwards />
+  <action-mappings >
+  	 	
+  	<action path="/hotel/index" forward="/WEB-INF/hotel/index.jsp"></action>
+  	<action path="/hotel/regist-1" forward="/WEB-INF/hotel/regist-1.jsp"></action>
+  	<action path="/RegistMember" name="memberForm" type="action.MemberAction" parameter="regist" input="/WEB-INF/hotel/regist-1.jsp">
+  		<exception key="duplicateUsername" type="exception.DuplicateUsernameException"></exception>  	  		
+  		<forward name="success" path="/hotel/regist-2.do"></forward>
+  	</action>
+  	<action path="/hotel/regist-2" forward="/WEB-INF/hotel/regist-2.jsp"></action>
+  		
+    <action path="/hotel/login" forward="/WEB-INF/hotel/login.jsp"></action>
+  
+    <action path="/LoginMember" type="action.MemberAction" parameter="login" input="/WEB-INF/hotel/login.jsp">
+  		<exception key="userDisabled" type="exception.UserDisabledException"></exception>
+  		<exception key="userNotFound" type="exception.UserNotFoundException"></exception>
+  		<forward name="success" path="/hotel/memberCenter.do"></forward>  
+    </action>
+  
+    <action path="/hotel/memberCenter" name="memberForm" type="action.SubscriptionAction" parameter="show">
+    	<forward name="success01" path="/hotel/memberCenter01.do"></forward>
+    </action>
+	<action path="/hotel/memberCenter01" forward="/WEB-INF/hotel/memberCenter.jsp"></action>
+  	
+  	<action path="/hotel/editSubscription" type="action.SubscriptionAction" parameter="showmessage">
+  	 	<forward name="success02" path="/hotel/editSubscription02.do"></forward>
+  	</action>
+  	<action path="/hotel/editSubscription02" forward="/WEB-INF/hotel/editSubscription.jsp"></action>
+  	<action path="/hotel/editSubscription03" name="subscriptionForm" type="action.SubscriptionAction" parameter="modifymessage">
+  		<forward name="success03" path="/hotel/memberCenter.do"></forward>
+  	</action>
+  	  	  	  
+  	<action path="/logout" type="action.LogoutAction" parameter="logout">
+  		<forward name="fail" path="/hotel/index.do"></forward>
+  	</action>
+  
+  	<action path="/hotel/newSubscription" forward="/WEB-INF/hotel/newSubscription.jsp"></action>
+  	<action path="/hotel/editMember" forward="/WEB-INF/hotel/editMember.jsp"></action>
+  
+  	<action path="/Modify" name="memberForm" type="action.ModifyAction" parameter="modify">
+  		<forward name="success" path="/logout-1.do"></forward>
+  	</action>
+  	<action path="/logout-1" type="action.LogoutAction" parameter="logout">
+  		<forward name="fail" path="/hotel/regist-2.do"></forward>
+  	</action>
+  
+  	<action path="/hotel/editPassword" forward="/WEB-INF/hotel/editPassword.jsp"></action>
+  
+  	<action path="/hotel/validatePassword" type="action.ModifyAction" parameter="pwd"></action>
+	<action path="/ModifyPwd" name="memberForm" type="action.ModifyAction" parameter="modifyPwd">
+		<forward name="success" path="/logout-1.do"></forward>
+	</action>
+	
+	<action path="/NewSubscription" name="subscriptionForm" type="action.SubscriptionAction" parameter="regist">
+		<forward name="success" path="/hotel/memberCenter.do"></forward>
+	</action>
+	 
+	<action path="/hotel/subscriptionDetail" type="action.SubscriptionAction" parameter="id">
+		<forward name="id" path="/hotel/subscriptionDetail-0.do"></forward>
+	</action>  
+	
+	<action path="/Delete02" type="action.SubscriptionAction" parameter="delete">
+		<forward name="fail" path="/hotel/memberCenter.do"></forward>
+		<forward name="success04" path="/hotel/memberCenter.do"></forward>
+	</action>
+	
+	<action path="/hotel/subscriptionDetail-0" type="action.Subscription_dtlAction" parameter="show">
+		<forward name="show" path="/hotel/subscriptionDetail-1.do"></forward>
+	</action>
+	<action path="/hotel/subscriptionDetail-1" forward="/WEB-INF/hotel/subscriptionDetail.jsp"></action>  
+	<action path="/Delete01" type="action.Subscription_dtlAction" parameter="delete">
+		<forward name="delete" path="/hotel/subscriptionDetail-0.do"></forward>
+	</action>
+		
+	<action path="/hotel/createSubscriptionDtl-1" forward="/WEB-INF/hotel/createSubscriptionDtl-1.jsp"></action>
+	  
+	<action path="/CreateSubscriptionDtl-2" name="subscription_dtlForm" type="action.Subscription_dtlAction" parameter="insertSession">
+		<forward name="insertSession" path="/hotel/createSubscriptionDtl-2.do"></forward>
+		<forward name="fail" path="/hotel/createSubscriptionDtl-1.do"></forward>
+	</action> 
+	<action path="/hotel/createSubscriptionDtl-2" forward="/WEB-INF/hotel/createSubscriptionDtl-2.jsp"></action> 
+	<action path="/CreateSubscriptionDtl-3" type="action.Subscription_dtlAction" parameter="insert">
+		<forward name="insert" path="/hotel/createSubscriptionDtl-3.do"></forward>
+	</action>
+	 
+	 <action path="/hotel/createSubscriptionDtl-3" type="action.Subscription_dtlAction" parameter="remove">
+	 	<forward name="remove" path="/hotel/createSubscriptionDtl-4.do"></forward>
+	 </action>
+	 <action path="/hotel/createSubscriptionDtl-4" forward="/WEB-INF/hotel/createSubscriptionDtl-3.jsp"></action> 
+	 
+	 <action path="/hotel/historySubscription" name="memberForm" type="action.SubscriptionAction" parameter="showhistory">
+		<forward name="success05" path="/hotel/historySubscription01.do"></forward> 
+	 </action> 
+  	 <action path="/hotel/historySubscription01" forward="/WEB-INF/hotel/historySubscription.jsp"></action>
+
+	 <action path="/hotel/roomPrice" forward="/WEB-INF/hotel/roomPrice.jsp"></action>
+
+	 <action path="/manager/login" forward="/WEB-INF/hotel/manager/login.jsp"></action>
+ 	 <action path="/LoginManager" type="action.ManagerAction" parameter="login">
+ 	 	<forward name="success" path="/manager/subscriptionQuery.do"></forward>
+ 	 </action>
+	 <action path="/manager/subscriptionQuery" forward="/WEB-INF/hotel/manager/subscriptionQuery.jsp"></action>
+		 
+ 	 <action path="/manager/SubscriptionListAction" type="action.ListAction" parameter="SubscriptionList">
+ 	 	<forward name="SubscriptionList" path="/manager/subscriptionList.do"></forward>
+ 	 </action>
+ 	 <action path="/manager/subscriptionList" forward="/WEB-INF/hotel/manager/subscriptionList.jsp"></action>
+ 	 <action path="/manager/subscriptionDetailAction" type="action.ListAction" parameter="SubscriptionDetail">
+ 	 	<forward name="SubscriptionDetail" path="/WEB-INF/hotel/manager/subscriptionDetail.jsp"></forward>
+ 	 </action>
+ 	
+ 	
+ 	 <action path="/manager/subscriptionDetailUpdate" type="action.ListAction" parameter="SubscriptionDetailUpdate">
+ 	 	<forward name="SubscriptionDetailUpdate" path="/WEB-INF/hotel/manager/subscriptionDetail.jsp"></forward>
+ 	 </action>
+ 	 
+ 	 <action path="/manager/subscriptionDetailDelete" type="action.ListAction" parameter="delete">
+ 	 	<forward name="delete" path="/manager/subscriptionQuery.do"></forward>
+ 	 </action>
+ 	 <action path="/manager/SubscriptionListDetele" type="action.ListAction" parameter="delete01">
+ 	 	<forward name="delete01" path="/manager/subscriptionQuery.do"></forward>
+ 	 </action>
+ 	 
+  </action-mappings>
+  <message-resources parameter="struts.ApplicationResources" />
+</struts-config>
+
